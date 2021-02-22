@@ -3,7 +3,7 @@ const counter = () => document.getElementById("counter");
 const pause = () => document.getElementById("pause");
 const resume = () => document.getElementById("pause");
 const heart = () => document.getElementById("heart");
-const likesList = () => document.getElementById("likes")
+const likesList = () => document.getElementById("likes");
 let toggle = 1 
 let interval =  setInterval(() => {
     let currentString = counter().innerText
@@ -32,7 +32,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
         
         heart().addEventListener("click", () =>{
-            debugger
             let currentString = counter().innerText
             let currentNumber = parseInt(currentString)
                 if (likes[currentString]){
@@ -47,14 +46,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
     });
     
-    // resume().addEventListener("click", () => {
-        //     interval
-        // });
         
         commentForm.addEventListener("submit", handleSubmitEvent);
         
         
 });
+
 
 
 function handleSubmitEvent(e) {
