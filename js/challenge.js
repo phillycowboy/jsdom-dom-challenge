@@ -8,12 +8,19 @@ const commentsList = document.querySelector('#list');
 const form = document.querySelector('#comment-form');
 const likesUL = document.querySelector('#likes');
 const refreshButton = document.createElement('button');
+const h1 = document.querySelector('h1')
+const ul = document.createElement('ul');
+
 refreshButton.innerText = "REFRESH";
 document.body.append(refreshButton);
-
-const ul = document.createElement('ul');
 commentsList.append(ul);
 
+h1.addEventListener('mouseover', () => {
+    document.body.style.backgroundColor = 'red';
+})
+h1.addEventListener('mouseout', () => {
+    document.body.style.backgroundColor = 'white';
+})
 
 refreshButton.addEventListener('click', () => {
     document.location.reload();
