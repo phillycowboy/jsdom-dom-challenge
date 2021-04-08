@@ -7,9 +7,17 @@ const submitBtn = document.querySelector('#submit');
 const commentsList = document.querySelector('#list');
 const form = document.querySelector('#comment-form');
 const likesUL = document.querySelector('#likes');
+const refreshButton = document.createElement('button');
+refreshButton.innerText = "REFRESH";
+document.body.append(refreshButton);
 
 const ul = document.createElement('ul');
 commentsList.append(ul);
+
+
+refreshButton.addEventListener('click', () => {
+    document.location.reload();
+})
 
 
 
