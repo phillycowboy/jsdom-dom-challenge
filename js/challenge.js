@@ -1,65 +1,90 @@
-const commentForm = document.getElementById("comment-form");
-const counter = () => document.getElementById("counter");
-const pause = () => document.getElementById("pause");
-const resume = () => document.getElementById("pause");
-const heart = () => document.getElementById("heart");
-const likesList = () => document.getElementById("likes");
-let toggle = 1 
-let interval =  setInterval(() => {
-    let currentString = counter().innerText
-    let currentNumber = parseInt(currentString)
-    currentNumber += 1
-    counter().innerText = currentNumber
-}, 1000);
-let likes = {}; 
+const counter = document.querySelector('#counter');
+const minBtn = document.querySelector('#minus');
+const plusBtn = document.querySelector('#plus');
+const heartBtn = document.querySelector('#heart');
+const pauseBtn = document.querySelector('#pause');
+const submitBtn = document.querySelector('#submit');
+const commentsList = document.querySelector('#list');
+const form = document.querySelector('#comment-form');
+const likesUL = document.querySelector('#likes');
 
-document.addEventListener("DOMContentLoaded", () => {
-
-    pause().addEventListener("click", () => {
-        toggle += 1 
-            if (toggle % 2 === 0){
-                clearInterval(interval)
-                pause().innerText = "resume"
-            } else {
-                interval = setInterval(() => {
-                    let currentString = counter().innerText
-                    let currentNumber = parseInt(currentString)
-                    currentNumber += 1
-                    counter().innerText = currentNumber
-                }, 1000); 
-                pause().innerText = "pause"
-            }
-        });
-        
-        heart().addEventListener("click", () =>{
-            let currentString = counter().innerText
-            let currentNumber = parseInt(currentString)
-                if (likes[currentString]){
-                    currentNumber += 1;
-                    likes[currentString] = currentNumber;
-                } else {
-                    likes[currentString] = 1;
-                    let li = document.createElement("li")
-                    li.id = currentString
-                    li.innerText = `${currentString} has ${likes[currentString]} like(s)`
-                    likesList().appendChild(li)
-                }
-    });
-    
-        
-        commentForm.addEventListener("submit", handleSubmitEvent);
-        
-        
-});
+const ul = document.createElement('ul');
+commentsList.append(ul);
 
 
 
-function handleSubmitEvent(e) {
-    e.preventDefault()
-    let commentValue = e.target[0].value
-    commentForm.innerHTML += `
-    <li class="comment">${commentValue}</li>
-  `
+function incrementCounter() {
+    let num = parseInt(counter.innerText, 10);
+    num ++;
+    counter.innerText = num;
+    // converting it to a number
+ 
 }
-// step 1 to store the number of likes number has in an object as a key
-//do you create a new li or update an li 
+
+function decrementCounter() {
+    let num = parseInt(counter.innerText, 10);
+    if(num > 0){
+        num --;
+        counter.innerText = num;
+    }
+    // }else if (num === 0){
+    //     minBtn.disabled = true;
+    // }else if (num > 1){
+    //     minBtn.disabled = false;
+    // }
+}
+
+
+plusBtn.addEventListener('click', () => {
+    incrementCounter();
+})
+
+
+minBtn.addEventListener('click', () => {
+    decrementCounter();
+})
+
+let isPaused = false;
+let timer = setInterval( incrementCounter, 1000);
+pauseBtn.addEventListener('click', () => {
+    if (isPaused === false) {
+        clearInterval(timer);
+        pauseBtn.innerText = 'resume';
+        isPaused = true;
+    } else if(isPaused === true){
+        timer = setInterval(incrementCounter, 1000);
+        pauseBtn.innerText = 'pause';
+        isPaused = false;
+    }
+    minBtn.disabled = !minBtn.disabled
+    plusBtn.disabled = !plusBtn.disabled
+    heartBtn.disabled = !heartBtn.disabled
+    submitBtn.disabled = !submitBtn.disabled
+})
+
+let likes = {};
+heartBtn.addEventListener('click', () => {
+     let num = counter.innerText;
+     let li = document.createElement('li')
+     li.id = num;
+     let updatedLike = document.getElementById(num);
+     if(likes[num]){
+        likes[num] = likes[num] + 1;
+        updatedLike.innerText = `${num} has been liked ${likes[num]} times`;
+    }else {
+        likes[num] = 1;
+        li.innerText = `${num} has been liked ${likes[num]} times`;
+        likesUL.append(li)
+    }
+
+})
+
+
+form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    let comments = e.target[0].value;
+    let li = document.createElement('li');
+    li.innerText = comments;
+    ul.append(li);
+    form.reset();
+})
